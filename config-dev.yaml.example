@@ -1,0 +1,18 @@
+port: 8080
+akmdUserId: ""
+twitter:
+  apiKey: ""
+  apiSecret: ""
+  accessToken: ""
+  accessSecret: ""
+  clientID: ""
+  clientSecret: ""
+  callbackURL: ""
+mysql:
+  username: "root"
+  password: "123456"
+  address: "127.0.0.1"
+  port: 3306
+  database: "akmd"
+  
+

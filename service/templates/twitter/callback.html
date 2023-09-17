@@ -1,0 +1,88 @@
+{{ define "twitter/callback.html" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style></style>
+  </head>
+  <body>
+    <h1>{{ .title }}</h1>
+    <button type="button" id="query">获取token</button>
+    <ul>
+      <li id="userid"></li>
+      <li id="username"></li>
+    </ul>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(function () {
+        // http://baseperp.xyz:8081/twitter/callback?state=random_chars_less_than_500_incase_csrf&code=MU44UXJyaFBiRmxmRHJoUXI3emdFWlQ4SEt0VjVfZE5Mc1Bpb0RORE1CcHBJOjE2OTQ4MzYwMjk2MDg6MTowOmFjOjE
+        /*
+        // oAuth 2.0
+        let urlParams = new URLSearchParams(window.location.search)
+        let state = urlParams.get("state")
+        let code = urlParams.get("code")
+        if (state !== "" && code !== "") {
+          $.post("/twitter/v2/access_token", {
+            state: state,
+            code: code,
+            address: "0xd5529D4Bfb929adD5954CAE7443DBD86A34cdBB1",
+          })
+            .done(function (result) {
+              if (result.data && result.data.user) {
+                let userID = result.data.user.user_id
+                let username = result.data.user.username
+                $("#userid").html("UserID: " + userID)
+                $("#username").html("UserName: " + username)
+              }
+              console.log(result.responseJSON)
+            })
+            .fail(function (res) {
+              console.log(res.responseJSON)
+            })
+        } else if (denied != "") {
+          console.log({ denied })
+        }
+            */
+
+        // oAuth v1.0a
+        let urlParams = new URLSearchParams(window.location.search)
+        let denied = urlParams.get("denied")
+        let oauth_token = urlParams.get("oauth_token")
+        let oauth_verifier = urlParams.get("oauth_verifier")
+        if (oauth_token != "" && oauth_verifier != "") {
+          $.post("/twitter/access_token", {
+            oauth_token: oauth_token,
+            oauth_verifier: oauth_verifier,
+            address: "0xd5529D4Bfb929adD5954CAE7443DBD86A34cdBB1",
+            signed_message:
+              "0x7e23371bd304935ee51964d97584b8fe5adbc10762accad8ee8777b8fa0e205b6c6e82c96551bc94c9fd786bf2b62c3af8bb9e6235fcb56c5304cb450dd926fd1b",
+          })
+            .done(function (result) {
+              if (result.data && result.data.user) {
+                let userID = result.data.user.user_id
+                let username = result.data.user.username
+                $("#userid").html("UserID: " + userID)
+                $("#username").html("UserName: " + username)
+              }
+              console.log(result.responseJSON)
+            })
+            .fail(function (res) {
+              console.log(res.responseJSON)
+            })
+        } else if (denied != "") {
+          console.log({ denied })
+        }
+      })
+
+      $("#query").click(() => {
+        console.log("hahahh")
+      })
+    </script>
+  </body>
+</html>
+{{ end }}
